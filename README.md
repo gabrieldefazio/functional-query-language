@@ -15,3 +15,4 @@ The role of `Table` instances is to handle the persistence. In this case that me
 The role of `FQL` instances is to build up a multi-faceted query for a particular table and then return an array of the results when executed with `.get`. Essentially a query object contains information about *what to do later*. Only during `.get` will this information be applied to *actually running* the query. It does so by using its table's `.read` and `.getRowIds` methods.
 
 The role of `Plan` instances is to simplify the role of queries. Each query should have a plan that contains all of the infromation the query should "remember" for later (when it executes). The plan is also responsible for abstracting some of what a query needs to do when executed. For example, it has `.withinLimit` method that returns whether or not a possible result is still within the plan's stored limit.# functional-query-language
+# functional-query-language
