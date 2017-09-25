@@ -27,11 +27,11 @@ describe("Part II: query me this", function () {
 
   describe('#limit', function () {
 
-    xit("`Plan` instances (plans) hold a row limit", function () {
+    it("`Plan` instances (plans) hold a row limit", function () {
       expect(Plan.prototype.setLimit).to.be.a('function');
     });
 
-    xit("`withinLimit` always returns true if no limit has been set", function () {
+    it("`withinLimit` always returns true if no limit has been set", function () {
       expect(Plan.prototype.withinLimit).to.be.a('function');
       const plan = new Plan();
       const randomInteger = Math.floor(Math.random() * 1000);
@@ -39,7 +39,7 @@ describe("Part II: query me this", function () {
       expect(plan.withinLimit(randomlySizedArray)).to.equal(true);
     });
 
-    xit("plans can return whether a possible result is `withinLimit`", function () {
+    it("plans can return whether a possible result is `withinLimit`", function () {
       const plan = new Plan();
       plan.setLimit(14);
       expect(plan.withinLimit([])).to.equal(true);
@@ -61,7 +61,7 @@ describe("Part II: query me this", function () {
       expect(movieTable.getRowIds).not.to.have.been.called();
     });
 
-    xit("queries can limit the result set", function () {
+    it("queries can limit the result set", function () {
       // note: each query will presumably need a corresponding `Plan` instance for this to work
       const limitQuery = movieQuery.limit(4);
       chai.spy.on(Plan.prototype, 'withinLimit');
@@ -75,13 +75,13 @@ describe("Part II: query me this", function () {
       ]);
     });
 
-    xit("the query minimizes reads from the table", function () {
+    it("the query minimizes reads from the table", function () {
       chai.spy.on(movieTable, 'read');
       movieQuery.limit(8).get();
       expect(movieTable.read).to.have.been.called.exactly(8);
     });
 
-    xit("`limit` returns a new query, it does not mutate the existing one", function () {
+    it("`limit` returns a new query, it does not mutate the existing one", function () {
       // BONUS: functional programming win
       movieQuery.limit(1);
       const resultForOriginal = movieQuery.get();
@@ -93,18 +93,18 @@ describe("Part II: query me this", function () {
 
   describe("#select", function () {
 
-    xit("plans hold to-be-selected columns", function () {
+    it("plans hold to-be-selected columns", function () {
       expect(Plan.prototype.setSelected).to.be.a('function');
     });
 
-    xit("`selectColumns` takes a row and returns a row, always with the same columns and values if there are no selected columns", function () {
+    it("`selectColumns` takes a row and returns a row, always with the same columns and values if there are no selected columns", function () {
       expect(Plan.prototype.selectColumns).to.be.a('function');
       const plan = new Plan();
       const inputRow = {type: 'Tomatoe', price: 1000};
       expect(plan.selectColumns(inputRow)).to.eql(inputRow);
     });
 
-    xit("given to-be-selected columns, a plan's `selectColumns` will return a narrowed row", function () {
+    it("given to-be-selected columns, a plan's `selectColumns` will return a narrowed row", function () {
       const planA = new Plan();
       planA.setSelected(['type']);
       expect(planA.selectColumns({type: 'Tomatoe', price: 1000})).to.eql({type: 'Tomatoe'});
@@ -114,7 +114,7 @@ describe("Part II: query me this", function () {
       expect(planB.selectColumns(exampleRow)).to.eql({language: 'English', title: 'The Road'});
     });
 
-    xit("`select` returns a query and does not cause the query to execute, only `get` does that", function () {
+    it("`select` returns a query and does not cause the query to execute, only `get` does that", function () {
       expect(FQL.prototype.select).to.be.a('function');
       chai.spy.on(movieTable, 'read');
       chai.spy.on(movieTable, 'getRowIds');
@@ -124,13 +124,13 @@ describe("Part II: query me this", function () {
       expect(movieTable.getRowIds).not.to.have.been.called();
     });
 
-    xit("queries can select all columns", function () {
+    it("queries can select all columns", function () {
       const result = movieQuery.select('*').get();
       expect(result).to.have.length(36);
       expect(result[35]).to.eql({ id: '0035', name: 'Vanilla Sky', year: 2001, rank: 6.9 });
     });
 
-    xit("queries can select a certain column", function () {
+    it("queries can select a certain column", function () {
       const result = movieQuery.select('name').get();
       expect(result).to.eql([
         { name: 'Aliens' },
@@ -172,7 +172,7 @@ describe("Part II: query me this", function () {
       ]);
     });
 
-    xit("queries can select multiple columns", function () {
+    it("queries can select multiple columns", function () {
       const resultA = new FQL(movieTable).select('name', 'year').get();
       expect(resultA).to.have.length(36);
       expect(resultA[0]).to.eql({ name: 'Aliens', year: 1986 });
@@ -193,7 +193,7 @@ describe("Part II: query me this", function () {
       });
     });
 
-    xit("`select` returns a new query, it does not mutate the existing one", function () {
+    it("`select` returns a new query, it does not mutate the existing one", function () {
       // BONUS: functional programming win
       const selectQueryA = movieQuery.select('id', 'name');
       const selectQueryB = movieQuery.select('id', 'rank');
